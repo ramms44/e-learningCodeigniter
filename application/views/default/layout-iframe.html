@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}{{ site_name }}{% endblock %}</title>
+        {% include 'layout-header.html' %}
+        {% block css %}{% endblock %}
+    </head>
+
+    <body onload="inIframe()">
+
+        <div id="body-content">
+            {% block content %}{% endblock %}
+        </div>
+
+        {% include 'layout-footer.html' %}
+        {% block js %}{% endblock %}
+
+        <script type="text/javascript">
+            // cek diakses dengan iframe atau tidak
+            function inIframe()
+            {
+                var is_iframe = true;
+                try {
+                    is_iframe = window.self !== window.top;
+                } catch (e) {
+                    is_iframe = true;
+                }
+
+                if (!is_iframe) {
+                    $("#body-content").html('redirect...');
+                    window.location.replace(site_url);
+                }
+            }
+        </script>
+    </body>
+</html>

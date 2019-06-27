@@ -1,0 +1,148 @@
+{% if mode == 'print' %}
+    {% set set_layout = 'layout-print.html' %}
+{% else %}
+    {% set set_layout = 'layout-iframe.html' %}
+{% endif %}
+{% extends set_layout %}
+
+{% block content %}
+{% if mode is empty %}
+    <a class="btn btn-primary pull-right btn-xs" target="_blank" href="{{ site_url('tugas/detail_jawaban/' ~ siswa.id ~ '/' ~ tugas.id ~ '?mode=print') }}">Print</a>
+{% endif %}
+<h4>Detail Jawaban</h4>
+
+{% if mode == 'print' %}
+<table class="table table-condensed table-striped">
+    <tbody>
+        <tr>
+            <td><b>Nis</b></td>
+            <td>: {{ siswa.nis }}</td>
+        </tr>
+        <tr>
+            <td><b>Nama</b></td>
+            <td>: {{ siswa.nama }}</td>
+        </tr>
+        <tr>
+            <td><b>Kelas</b></td>
+            <td>: {{ siswa.kelas_aktif.nama }}</td>
+        </tr>
+        <tr>
+            <td><b>Tugas</b></td>
+            <td>: {{ tugas.judul }}</td>
+        </tr>
+    </tbody>
+</table>
+<br>
+{% endif %}
+
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>Tgl Mengerjakan</th>
+            <th>Tgl Selesai</th>
+            <th>Lama Pengerjaan</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ tgl_jam_indo(history.mulai) }}</td>
+            <td>{{ tgl_jam_indo(history.tgl_submit) }}</td>
+            <td>{{ history.total_waktu }}</td>
+        </tr>
+    </tbody>
+</table>
+<br>
+
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>IP</th>
+            <th>Agent</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ history.ip }}</td>
+            <td>{{ history.agent_string }}</td>
+        </tr>
+    </tbody>
+</table>
+<br>
+
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>Jml soal</th>
+            <th>Jml benar</th>
+            <th>Jml salah</th>
+            <th>Jml kosong</th>
+            <th>Nilai</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ count(history.pertanyaan) }}</td>
+            <td>{{ history.jml_benar }}</td>
+            <td>{{ history.jml_salah }}</td>
+            <td>{{ (count(history.pertanyaan) != (history.jml_benar + history.jml_salah)) ? count(history.pertanyaan) - (history.jml_benar + history.jml_salah) : 0 }}</td>
+            <td><b>{{ round(history.nilai, 2) }}</b></td>
+        </tr>
+    </tbody>
+</table>
+<br>
+
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th colspan="2">List Jawaban</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in history.pertanyaan %}
+        <tr id="pertanyaan-{{ p.id }}">
+            <td style="width:30px;">
+                <b>{{ loop.index }}.</b>
+                <br>
+                {% if get_jawaban(history.jawaban, p.id) == get_kunci_pilihan(p.pilihan) %}
+                <span class="text-error"><i class="icon icon-ok"></i></span>
+                {% else %}
+                <span class="text-error"><i class="icon icon-remove"></i></span>
+                {% endif %}
+            </td>
+            <td>
+                <div class="pertanyaan">
+                    {{ p.pertanyaan|raw }}
+                </div>
+
+                <div id="pilihan-{{ p.id }}">
+                    <table class="table table-condensed table-striped">
+                        <tbody>
+                            {% for pil in p.pilihan if pil.konten is not empty %}
+                            <tr>
+                                <td style="width:15px;"><b>{{ get_abjad(pil.urutan) }}</b></td>
+                                <td>
+                                    {{ pil.konten|raw }}
+
+                                    <ul class="unstyled inline" style="margin-bottom: 0px;margin-left: -5px;">
+                                        {% if pil.kunci == 1 %}
+                                            <li><small class="text-warning"><i class="icon icon-star"></i> Kunci Jawaban</small></li>
+                                        {% endif %}
+                                        {% if is_pilih(history.jawaban, p.id, pil.id) == true %}
+                                            <li><small class="text-success"><i class="icon-hand-up"></i> Jawaban Siswa</small></li>
+                                        {% endif %}
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

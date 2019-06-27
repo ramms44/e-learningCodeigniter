@@ -1,0 +1,36 @@
+{% extends "layout-iframe.html" %}
+
+{% block content %}
+<h4>Edit Foto</h4>
+{{ get_flashdata('edit')|raw }}
+
+{% if is_demo_app() and pengajar.is_admin == true %}
+    {{ get_alert('warning', get_demo_msg())|raw }}
+{% endif %}
+
+{{ form_open_multipart('pengajar/edit_picture/' ~ status_id ~ '/' ~ pengajar_id)|raw }}
+<table class="table table-striped">
+    <tbody>
+        <tr>
+            <td>
+                <img class="img-polaroid" src="{{ get_url_image_pengajar(pengajar.foto, 'medium', pengajar.jenis_kelamin) }}">
+            </td>
+            <td>
+                <input type="file" name="userfile" class="btn btn-small" style="max-width:190px;">
+                {{ (error_upload is not empty) ? error_upload|raw }}
+            </td>
+        <tr>
+        {% if is_demo_app() == false or pengajar.is_admin == false %}
+        <tr>
+            <td colspan="2">
+                {% if pengajar.foto != '' %}
+                <a href="{{ site_url('pengajar/delete_foto/' ~ pengajar_id ~ '/' ~ enurl_redirect(current_url())) }}" onclick="return confirm('Anda yakin ingin menghapus foto?')" class="pull-right btn btn-default"><i class="icon-trash"></i> Hapus foto</a>
+                {% endif %}
+                <button type="submit" class="btn btn-primary">Update</button>
+            </td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+{{ form_close()|raw }}
+{% endblock %}

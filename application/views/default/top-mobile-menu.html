@@ -1,0 +1,6 @@
+
+{% for menus in list_menu %}
+    {% for menu in menus %}
+        <li class="visible-phone visible-tablet">{{ menu|raw }}</li>
+    {% endfor %}
+{% endfor %}

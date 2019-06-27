@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Install - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="module span8 offset2">
+            <div class="module-head">
+                <span class="pull-right"><b>Step 1 : </b>Konfigurasi config & database</span>
+                <h3>Install e-learning</h3>
+            </div>
+
+            <div class="module-body">
+                {{ error|raw }}
+
+<h4>Ikuti langkah - langkah berikut:</h4>
+
+<ol>
+    <li>Rename file <b>application/config/database.sample.php</b> menjadi <b>application/config/database.php</b></li>
+
+    {% if error is not empty %}
+    <li>
+Atur koneksi database pada file <b>application/config/database.php</b>, isi bagian - bagian berikut :<br>
+<pre>
+$db['default']['hostname'] = 'localhost';
+$db['default']['username'] = ''; //username user mysql
+$db['default']['password'] = ''; //password user mysql
+$db['default']['database'] = ''; //nama database
+$db['default']['dbprefix'] = 'el_'; //awalan nama tabel
+</pre>
+    </li>
+    {% endif %}
+
+    <li>
+Buka file <b>application/config/config.php</b>, atur base_url, encryption_key dan sess_cookie_name menjadi seperti berikut : <br>
+<pre>
+$config['base_url'] = '{{ set_base_url }}';
+$config['encryption_key'] = '{{ md5(uniqid()) }}';
+$config['sess_cookie_name'] = 'ci_session_{{ uniqid() }}';
+</pre>
+    </li>
+</ol>
+<hr>
+<button class="btn btn-primary" type="button" onclick="location.reload()">Install</button>
+            </div>
+    </div>
+</div>
+{% endblock %}

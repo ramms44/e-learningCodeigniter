@@ -1,0 +1,65 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Detail Percakapan - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('message', 'Pesan')|raw }} / Detail Percakapan</h3>
+    </div>
+    <div class="module-body">
+
+        {% set active_msg_id = r.id %}
+
+        <div class="table-responsive">
+        <table class="table table-hover" id="list-msg">
+            <tbody>
+                {% for d in old_related_msg %}
+                    {% set item_msg = d %}
+                    {% include 'detail-pesan-item.html' %}
+                {% endfor %}
+
+                {% set item_msg = r %}
+                {% include 'detail-pesan-item.html' %}
+
+                {% for n in new_related_msg %}
+                    {% set item_msg = n %}
+                    {% include 'detail-pesan-item.html' %}
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+
+        <br>
+        {% if confirm_del_all == false %}
+        <div class="msg-active">
+            <b>Kirim Pesan</b>
+            <hr class="hr-msg">
+            {{ form_open_multipart('message/create/' ~ r.sender_receiver_id, {'class' : 'form-horizontal row-fluid'})|raw }}
+                <input type="hidden" name="penerima" value="{{ receiver_name }}">
+                <textarea name="content" id="content" class="texteditor">{{ set_value('content')|raw }}</textarea>
+                {{ form_error('content')|raw }}
+                <br>
+                <p><button class="btn btn-primary">Kirim</button></p>
+            {{ form_close()|raw }}
+        </div>
+        {% endif %}
+
+        {% if confirm_del_all == true %}
+        <hr class="hr-msg">
+        <div id="confirm" class="alert alert-block">
+            <div class="pull-right btn-group" style="margin-top: -5px;">
+                <a class="btn btn-danger" href="{{ site_url('message/del_all/' ~ r.id) }}">Ya hapus</a>
+                <a class="btn btn-primary" href="{{ site_url('message') }}">Batal</a>
+            </div>
+            <b>Anda yakin ingin menghapus percakapan ini?</b>
+        </div>
+        {% endif %}
+
+        <input type="hidden" id="active_msg_id" value="{{ r.id }}">
+
+    </div>
+</div>
+{% endblock %}

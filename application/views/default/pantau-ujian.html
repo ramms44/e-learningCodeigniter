@@ -1,0 +1,118 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Pantau Ujian - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('tugas', 'Tugas')|raw }} / {{ anchor('tugas/' ~ ((tugas.type_id == 2) ? 'koreksi' : 'nilai') ~'/' ~ tugas.id, 'Lihat Nilai')|raw }} / Pantau Ujian</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('tugas')|raw }}
+
+        <div class="bs-callout bs-callout-info">
+            <div class="btn-group pull-right" style="margin-top:-5px;">
+                {{ anchor('tugas/edit/' ~ tugas.id ~ '/' ~ enurl_redirect(current_url()), '<i class="icon icon-edit"></i> Edit Tugas', {'class' : 'btn btn-default'})|raw }}
+                {% if tugas.aktif == 0 %}
+                    {{ anchor('tugas/terbitkan/' ~ tugas.id ~ '/' ~ enurl_redirect(current_url()), '<i class="icon-ok"></i> Terbitkan', {'class' : 'btn btn-success btn-small'})|raw }}
+                {% elseif tugas.aktif == 1 %}
+                    {{ anchor('tugas/tutup/' ~ tugas.id ~ '/' ~ enurl_redirect(current_url()), '<i class="icon-minus"></i> Tutup', {'class' : 'btn btn-danger btn-small'})|raw }}
+                {% endif %}
+            </div>
+            <b><a class="as-link" data-toggle="collapse" data-target="#detail-tugas"><i class="icon-info-sign" style="line-height: 0px;"></i> {{ tugas.judul|upper }}</a></b>
+
+            <div id="detail-tugas" class="collapse" style="margin-top: 5px;">
+                <table class="table">
+                    <tr>
+                        <th style="border-top: none;" width="15%">Tipe</th>
+                        <td style="border-top: none;">{{ tugas.type_label }}</td>
+                    </tr>
+                    <tr>
+                        <th>Judul</th>
+                        <td>{{ tugas.judul }}</td>
+                    </tr>
+                    <tr>
+                        <th>Matapelajaran</th>
+                        <td>{{ tugas.mapel.nama }}</td>
+                    </tr>
+                    <tr>
+                        <th>Kelas</th>
+                        <td>
+                            <ul class="unstyled inline" style="margin-left: -5px;margin-bottom: 0px;">
+                                {% for k in tugas.tugas_kelas %}
+                                <li>{{ k.nama }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Info</th>
+                        <td>{{ tugas.info|raw }}</td>
+                    </tr>
+                    <tr>
+                        <th>Durasi</th>
+                        <td>{{ tugas.durasi }} Menit</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+        <br>
+
+        <table class="table table-striped datatable">
+            <thead>
+                <tr>
+                    <th>Siswa</th>
+                    <th width="60%">Informasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for n in retrieve_all %}
+                <tr>
+                    <td>
+                        <img style="height:20px;width:20px; margin-right: 10px;" class="img-polaroid img-circle pull-left" src="{{ get_url_image_siswa(n.siswa.foto, 'medium', n.siswa.jenis_kelamin) }}">
+                        <a href="{{ site_url('siswa/detail/' ~ n.siswa.status_id ~ '/' ~ n.siswa.id) }}"><b>{{ n.siswa.nama }} {{ ((n.siswa.nis is not empty) ? '<span class="text-muted">(' ~ n.siswa.nis ~ ')</span>')|raw }}</b></a>
+                        <br> {{ n.siswa.kelas_aktif.nama }} <span class="text-muted">({{ n.siswa.kelas_aktif.id }})</span>
+                    </td>
+                    <td>
+                        <table class="table table-condensed table-bordered">
+                            <tr>
+                                <td width="20%">IP</td>
+                                <td>{{ n.ip }}</td>
+                            </tr>
+                            <tr>
+                                <td>Agent</td>
+                                <td>{{ n.agent_string }}</td>
+                            </tr>
+                            <tr>
+                                <td>Mulai</td>
+                                <td>{{ tgl_jam_indo(n.mulai) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Selesai</td>
+                                <td>{{ tgl_jam_indo(n.selesai) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Sisa waktu</td>
+                                <td>{{ n.sisa_menit_string|raw }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="btn-group">
+                                        {{ anchor('tugas/pantau/' ~ tugas.id ~ '/jawaban_sementara/' ~ n.siswa.id, 'Lihat jawaban sementara',{'class' : 'btn btn-small btn-primary iframe-jawaban-sementara'})|raw }}
+                                        <a href="{{ site_url('tugas/pantau/' ~ tugas.id ~ '/reset/' ~ n.siswa.id) }}" class="btn btn-small btn-default" onclick="return confirm('Anda yakin ingin mengulang proses ujian siswa tersebut?')" data-toggle="tooltip" title="Ulang proses ujian siswa<br>dan anggap belum mengerjakan.">Reset</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endblock %}

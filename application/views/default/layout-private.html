@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}{{ site_name }}{% endblock %}</title>
+        {% include 'layout-header.html' %}
+        {% block css %}{% endblock %}
+    </head>
+
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+                        <i class="icon-reorder shaded"></i>
+                    </a>
+                    <a class="brand" href="{{ site_url }}">
+                        <img src="{{ get_logo_config() }}"> <span class="visible-phone brand-txt">e-Learning</span><span class="visible-desktop visible-tablet brand-txt">{{ site_name }}</span>
+                    </a>
+                    <div class="nav-collapse collapse navbar-inverse-collapse">
+                        <form class="navbar-search pull-left input-append" method="get" action="{{ site_url('welcome/search') }}">
+                            <input type="text" class="span3" name="q">
+                            <button class="btn" type="submit">
+                                <i class="icon-search"></i>
+                            </button>
+                        </form>
+                        <ul class="nav pull-right">
+                            {% include 'top-mobile-menu.html' %}
+
+                            {% if is_admin() %}
+                            <li><a href="{{ site_url('welcome/get_plugin') }}">PLUGINS</a></li>
+                            {% endif %}
+                            <li class="nav-user dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                {{ nama_panggilan(get_sess_data('user', 'nama')) }}
+
+                                <span class="pull-right">
+                                <img src="{{ get_url_image_session(get_sess_data('user', 'foto'), 'medium', get_sess_data('user', 'jenis_kelamin')) }}" class="nav-avatar img-polaroid" />
+                                <b class="caret"></b></a>
+                                </span>
+                                <ul class="dropdown-menu">
+                                    {% if is_admin() %}
+                                    <li>{{ anchor('pengajar/detail/'~ get_sess_data('user', 'status_id') ~'/' ~ get_sess_data('user', 'id'), 'Detail Profil', {'title' : 'Detail Profil'})|raw }}</li>
+                                    {% endif %}
+
+                                    {% if is_pengajar() %}
+                                    <li>{{ anchor('login/pp', 'Profil & Akun Login')|raw }}</li>
+                                    {% endif %}
+
+                                    {% if is_siswa() %}
+                                    <li>{{ anchor('login/pp', 'Profil & Akun Login')|raw }}</li>
+                                    {% endif %}
+
+                                    <li><a href="{{ site_url('login/login_log/' ~ get_sess_data('login', 'id')) }}">Login log</a></li>
+                                    <li><a href="{{ site_url('login/logout') }}">Logout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.nav-collapse -->
+                </div>
+            </div>
+            <!-- /navbar-inner -->
+        </div>
+
+        <!-- /navbar -->
+        <div class="wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="span3 visible-desktop">
+                        <div class="sidebar">
+                            {% include 'sidebar-menu.html' %}
+                        </div>
+                        <!--/.sidebar-->
+                    </div>
+                    <!--/.span3-->
+                    <div class="span9 mobile-12">
+                        <div class="content">
+                            {% if pass_siswa_equal_nis() == true %}
+                                {{ get_alert('warning', "Dimohon untuk segera mengganti password anda untuk alasan keamanan. " ~ anchor('login/pp?show=edit-password', 'Ganti Password'))|raw }}
+                            {% endif %}
+
+                            {% block content %}{% endblock %}
+                        </div>
+                    </div>
+                    <!--/.span9-->
+                </div>
+            </div>
+            <!--/.container-->
+        </div>
+        <!--/.wrapper-->
+        <div class="footer">
+            <div class="container">
+                <center>
+                    <b class="copyright">{{ copyright|raw }} </b> All rights reserved.<br>
+                    {{ version|raw }} | Page loaded in {{ elapsed_time }} seconds.
+                </center>
+            </div>
+        </div>
+
+        {% include 'layout-footer.html' %}
+        {% block js %}{% endblock %}
+
+    </body>
+</html>

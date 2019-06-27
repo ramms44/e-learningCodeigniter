@@ -1,0 +1,289 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Pengaturan - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>Pengaturan</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('pengaturan')|raw }}
+
+        {% if is_demo_app() %}
+            {{ get_alert('warning', get_demo_msg())|raw }}
+        {% endif %}
+
+        {{ form_open_multipart('welcome/pengaturan', {'class' : 'form-horizontal row-fluid'})|raw }}
+            <div class="control-group">
+                <label class="control-label">Logo sekolah</label>
+                <div class="controls">
+                    {% set logo_sekolah = get_pengaturan('logo-sekolah', 'value') %}
+                    {% if logo_sekolah is empty %}
+                        <img src="{{ logo_url_medium }}">
+                    {% else %}
+                        <a href="{{ site_url('welcome/pengaturan/?delete-img=5') }}" onclick="return confirm('Anda yakin ingin menghapus?')" class="pull-right" title="Hapus logo"><i class="icon-trash"></i></a>
+                        <img src="{{ get_url_image(logo_sekolah) }}" style="max-width: 120px;">
+                    {% endif %}
+                    <br>Ganti logo <small>(Ukuran terbaik 120 x 122 pixel)</small><br>
+                    <input type="file" name="logo-sekolah">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Nama sekolah <span class="text-error">*</span></label>
+                <div class="controls">
+                    <input type="text" name="nama-sekolah" class="span8" value="{{ set_value('nama-sekolah', get_pengaturan('nama-sekolah', 'value')) }}">
+                    <br>{{ form_error('nama-sekolah')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Alamat sekolah <span class="text-error">*</span></label>
+                <div class="controls">
+                    <input type="text" name="alamat" class="span8" value="{{ set_value('alamat', get_pengaturan('alamat', 'value')) }}">
+                    <br>{{ form_error('alamat')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Telpon</label>
+                <div class="controls">
+                    <input type="text" name="telp" class="span5" value="{{ set_value('telp', get_pengaturan('telp', 'value')) }}">
+                    <br>{{ form_error('telp')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Registrasi siswa</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="registrasi-siswa" value="1" {{ set_radio('registrasi-siswa', '1', ((get_pengaturan('registrasi-siswa', 'value') == '1') ? true)) }}> Tampilkan
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="registrasi-siswa" value="0" {{ set_radio('registrasi-siswa', '0', ((get_pengaturan('registrasi-siswa', 'value') == '0') ? true)) }}> Sembunyikan
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Status registrasi siswa</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="status-registrasi-siswa" value="0" {{ set_radio('status-registrasi-siswa', '0', ((in_array(get_pengaturan('status-registrasi-siswa', 'value'), ['', '0'])) ? true)) }}> Pending
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="status-registrasi-siswa" value="1" {{ set_radio('status-registrasi-siswa', '1', ((get_pengaturan('status-registrasi-siswa', 'value') == '1') ? true)) }}> Aktif
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Registrasi pengajar</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="registrasi-pengajar" value="1" {{ set_radio('registrasi-pengajar', '1', ((get_pengaturan('registrasi-pengajar', 'value') == '1') ? true)) }}> Tampilkan
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="registrasi-pengajar" value="0" {{ set_radio('registrasi-pengajar', '0', ((get_pengaturan('registrasi-pengajar', 'value') == '0') ? true)) }}> Sembunyikan
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Status registrasi pengajar</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="status-registrasi-pengajar" value="0" {{ set_radio('status-registrasi-pengajar', '0', ((in_array(get_pengaturan('status-registrasi-pengajar', 'value'), ['', '0'])) ? true)) }}> Pending
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="status-registrasi-pengajar" value="1" {{ set_radio('status-registrasi-pengajar', '1', ((get_pengaturan('status-registrasi-pengajar', 'value') == '1') ? true)) }}> Aktif
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Info Registrasi</label>
+                <div class="controls">
+                    <textarea name="info-registrasi" class="texteditor" style="width:100%; height:300px;">{{ set_value('info-registrasi', get_pengaturan('info-registrasi', 'value'))|raw }}</textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Peraturan E-learning</label>
+                <div class="controls">
+                    <textarea name="peraturan-elearning" class="texteditor" style="width:100%; height:300px;">{{ set_value('peraturan-elearning', get_pengaturan('peraturan-elearning', 'value'))|raw }}</textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Email server</label>
+                <div class="controls">
+                    <input type="text" name="email-server" class="span5" value="{{ set_value('email-server', get_pengaturan('email-server', 'value')) }}">
+                    <br>{{ form_error('email-server')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">SMTP host</label>
+                <div class="controls">
+                    <input type="text" name="smtp-host" class="span5" value="{{ set_value('smtp-host', get_pengaturan('smtp-host', 'value')) }}">
+                    <br>{{ form_error('smtp-host')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">SMTP username</label>
+                <div class="controls">
+                    <input type="text" name="smtp-username" class="span5" value="{{ set_value('smtp-username', get_pengaturan('smtp-username', 'value')) }}">
+                    <br>{{ form_error('smtp-username')|raw }}
+                </div>
+            </div>
+            {% if is_demo_app() == false %}
+            <div class="control-group">
+                <label class="control-label">SMTP password</label>
+                <div class="controls">
+                    <input type="text" name="smtp-pass" class="span5" value="{{ set_value('smtp-pass', get_pengaturan('smtp-pass', 'value')) }}">
+                    <br>{{ form_error('smtp-pass')|raw }}
+                </div>
+            </div>
+            {% endif %}
+            <div class="control-group">
+                <label class="control-label">SMTP port</label>
+                <div class="controls">
+                    <input type="text" name="smtp-port" class="span5" value="{{ set_value('smtp-port', get_pengaturan('smtp-port', 'value')) }}">
+                    <br>{{ form_error('smtp-port')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Edit username siswa</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="edit-username-siswa" value="1" {{ set_radio('edit-username-siswa', '1', ((in_array(get_pengaturan('edit-username-siswa', 'value'), ['', '1'])) ? true)) }}> Siswa dapat mengganti username
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="edit-username-siswa" value="0" {{ set_radio('edit-username-siswa', '0', ((get_pengaturan('edit-username-siswa', 'value') == '0') ? true)) }}> Siswa tidak dapat mengganti username
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Edit foto siswa</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="edit-foto-siswa" value="1" {{ set_radio('edit-foto-siswa', '1', ((in_array(get_pengaturan('edit-foto-siswa', 'value'), ['', '1'])) ? true)) }}> Siswa dapat mengganti foto
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="edit-foto-siswa" value="0" {{ set_radio('edit-foto-siswa', '0', ((get_pengaturan('edit-foto-siswa', 'value') == '0') ? true)) }}> Siswa tidak dapat mengganti foto
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Slider halaman login</label>
+                <div class="controls" style="background-color: #FBFBFB; padding: 10px;border-radius: 5px;">
+                    <table class="table table-condensed">
+                        <tr>
+                            <td style="border-top: none;">
+                                <div class="row-fluid">
+                                    <div class="span2" style="margin-bottom: 10px;">
+                                        Gambar 1
+                                    </div>
+                                    <div class="span10">
+                                        {% if get_pengaturan('img-slide-1', 'value') %}
+                                        <a href="{{ site_url('welcome/pengaturan/?delete-img=1') }}" class="pull-right" title="Hapus gambar"><i class="icon-trash"></i></a>
+                                        <img src="{{ get_url_image(get_pengaturan('img-slide-1', 'value')) }}" class="img-polaroid" style="max-height: 150px;margin-bottom:10px;">
+                                        <br>Ganti gambar :
+                                        {% endif %}
+                                        <input type="file" name="img-slide-1">
+                                    </div>
+                                </div>
+                                <div class="row-fluid" style="margin-bottom: 10px;margin-top: 10px;">
+                                    <div class="span2">
+                                        Info gambar 1
+                                    </div>
+                                    <div class="span10">
+                                        <textarea name="info-slide-1" class="span12" placeholder="text atau html">{{ set_value('info-slide-1', get_pengaturan('info-slide-1', 'value'))|raw }}</textarea>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-top:1px dashed #fbfbfb;">
+                                <div class="row-fluid">
+                                    <div class="span2" style="margin-bottom: 10px;">
+                                        Gambar 2
+                                    </div>
+                                    <div class="span10">
+                                        {% if get_pengaturan('img-slide-2', 'value') %}
+                                        <a href="{{ site_url('welcome/pengaturan/?delete-img=2') }}" class="pull-right" title="Hapus gambar"><i class="icon-trash"></i></a>
+                                        <img src="{{ get_url_image(get_pengaturan('img-slide-2', 'value')) }}" class="img-polaroid" style="max-height: 150px;margin-bottom:10px;">
+                                        <br>Ganti gambar :
+                                        {% endif %}
+                                        <input type="file" name="img-slide-2">
+                                    </div>
+                                </div>
+                                <div class="row-fluid" style="margin-bottom: 10px;margin-top: 10px;">
+                                    <div class="span2">
+                                        Info gambar 2
+                                    </div>
+                                    <div class="span10">
+                                        <textarea name="info-slide-2" class="span12" placeholder="text atau html">{{ set_value('info-slide-2', get_pengaturan('info-slide-2', 'value'))|raw }}</textarea>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-top:1px dashed #fbfbfb;">
+                                <div class="row-fluid">
+                                    <div class="span2" style="margin-bottom: 10px;">
+                                        Gambar 3
+                                    </div>
+                                    <div class="span10">
+                                        {% if get_pengaturan('img-slide-3', 'value') %}
+                                        <a href="{{ site_url('welcome/pengaturan/?delete-img=3') }}" class="pull-right" title="Hapus gambar"><i class="icon-trash"></i></a>
+                                        <img src="{{ get_url_image(get_pengaturan('img-slide-3', 'value')) }}" class="img-polaroid" style="max-height: 150px;margin-bottom:10px;">
+                                        <br>Ganti gambar :
+                                        {% endif %}
+                                        <input type="file" name="img-slide-3">
+                                    </div>
+                                </div>
+                                <div class="row-fluid" style="margin-bottom: 10px;margin-top: 10px;">
+                                    <div class="span2">
+                                        Info gambar 3
+                                    </div>
+                                    <div class="span10">
+                                        <textarea name="info-slide-3" class="span12" placeholder="text atau html">{{ set_value('info-slide-3', get_pengaturan('info-slide-3', 'value'))|raw }}</textarea>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-top:1px dashed #fbfbfb;">
+                                <div class="row-fluid">
+                                    <div class="span2" style="margin-bottom: 10px;">
+                                        Gambar 4
+                                    </div>
+                                    <div class="span10">
+                                        {% if get_pengaturan('img-slide-4', 'value') %}
+                                        <a href="{{ site_url('welcome/pengaturan/?delete-img=4') }}" class="pull-right" title="Hapus gambar"><i class="icon-trash"></i></a>
+                                        <img src="{{ get_url_image(get_pengaturan('img-slide-4', 'value')) }}" class="img-polaroid" style="max-height: 150px;margin-bottom:10px;">
+                                        <br>Ganti gambar :
+                                        {% endif %}
+                                        <input type="file" name="img-slide-4">
+                                    </div>
+                                </div>
+                                <div class="row-fluid" style="margin-bottom: 10px;margin-top: 10px;">
+                                    <div class="span2">
+                                        Info gambar 4
+                                    </div>
+                                    <div class="span10">
+                                        <textarea name="info-slide-4" class="span12" placeholder="text atau html">{{ set_value('info-slide-4', get_pengaturan('info-slide-4', 'value'))|raw }}</textarea>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            {% if is_demo_app() == false %}
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+            {% endif %}
+        {{ form_close()|raw }}
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}{{ site_name }}{% endblock %}</title>
+    {% include 'layout-header.html' %}
+    {% block css %}{% endblock %}
+</head>
+<body>
+
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+                    <i class="icon-reorder shaded"></i>
+                </a>
+
+                <a class="brand" href="{{ site_url() }}">
+                    <img src="{{ get_logo_config() }}"> <span class="visible-phone brand-txt">e-Learning</span><span class="visible-desktop visible-tablet brand-txt">{{ site_name }}</span>
+                </a>
+
+                <div class="nav-collapse collapse navbar-inverse-collapse">
+                    <ul class="nav pull-right">
+                        {% if get_pengaturan('registrasi-siswa', 'value') == 1 or get_pengaturan('registrasi-pengajar', 'value') == 1 %}
+                        <li><a href="{{ site_url('login/register') }}">Register</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div><!-- /navbar-inner -->
+    </div><!-- /navbar -->
+
+    <div class="wrapper">
+        <div class="container">
+
+            {% block content %}{% endblock %}
+
+        </div>
+    </div><!--/.wrapper-->
+
+    <div class="footer">
+        <div class="container">
+            <center>
+                <b class="copyright">{{ copyright|raw }} </b> All rights reserved.<br>
+                {{ version|raw }} | Page loaded in {{ elapsed_time }} seconds.
+            </center>
+        </div>
+    </div>
+
+    {% include 'layout-footer.html' %}
+    {% block js %}{% endblock %}
+</body>

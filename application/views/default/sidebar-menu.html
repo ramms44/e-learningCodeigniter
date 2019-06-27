@@ -1,0 +1,8 @@
+
+{% for menus in list_menu %}
+    <ul class="widget widget-menu unstyled">
+    {% for menu in menus %}
+        <li>{{ menu|raw }}</li>
+    {% endfor %}
+    </ul>
+{% endfor %}
