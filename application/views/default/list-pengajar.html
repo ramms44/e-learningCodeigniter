@@ -15,7 +15,7 @@ Data Pengajar - {{ parent() }}
         {% if is_admin() == true %}
         <div class="row-fluid">
             <div class="span7">
-                <a href="{{ site_url('pengajar/add/' ~ status_id) }}" class="btn btn-primary">Tambah Pengajar</a>
+                <a href="{{ site_url('pengajar/add/' ~ status_id) }}" class="btn btn-primary">Tambah Guru</a>
             </div>
 
             <div class="span5">
@@ -117,7 +117,7 @@ Data Pengajar - {{ parent() }}
                         {% endif %}
                         ID
                     </th>
-                    <th>Informasi Pengajar</th>
+                    <th>Informasi Guru</th>
                     <th width="22%"></th>
                 </tr>
             </thead>

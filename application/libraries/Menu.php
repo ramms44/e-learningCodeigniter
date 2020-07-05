@@ -25,7 +25,7 @@ class Menu
             ),
             1 => array(
                 '<a href="' . site_url('siswa'). '"><i class="menu-icon icon-group"></i>Siswa <span class="menu-count-pending-siswa"></span></a>',
-                '<a href="' . site_url('pengajar'). '"><i class="menu-icon icon-user"></i>Pengajar <span class="menu-count-pending-pengajar"></span></a>'
+                '<a href="' . site_url('pengajar'). '"><i class="menu-icon icon-user"></i>Guru <span class="menu-count-pending-pengajar"></span></a>'
             ),
             2 => array(
                 '<a href="' . site_url('tugas?clear_filter=true') . '"><i class="menu-icon icon-tasks"></i>Tugas </a>',

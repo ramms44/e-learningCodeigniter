@@ -7,7 +7,7 @@ Filter Pengajar - {{ parent() }}
 {% block content %}
 <div class="module">
     <div class="module-head">
-        <h3>Filter Pengajar</h3>
+        <h3>Filter Guru</h3>
     </div>
     <div class="module-body">
         {{ get_flashdata('pengajar')|raw }}
@@ -15,7 +15,7 @@ Filter Pengajar - {{ parent() }}
         {% if is_admin() == true %}
         <div class="row-fluid">
             <div class="span7">
-                <a href="{{ site_url('pengajar/add/1') }}" class="btn btn-primary">Tambah Pengajar</a>
+                <a href="{{ site_url('pengajar/add/1') }}" class="btn btn-primary">Tambah Guru</a>
             </div>
 
             <div class="span5">
@@ -137,7 +137,7 @@ Filter Pengajar - {{ parent() }}
                         {% endif %}
                         ID
                     </th>
-                    <th>Informasi Pengajar</th>
+                    <th>Informasi Guru</th>
                     <th width="22%"></th>
                 </tr>
             </thead>
