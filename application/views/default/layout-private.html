@@ -27,7 +27,6 @@
                             {% include 'top-mobile-menu.html' %}
 
                             {% if is_admin() %}
-                            <li><a href="{{ site_url('welcome/get_plugin') }}">PLUGINS</a></li>
                             {% endif %}
                             <li class="nav-user dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 {{ nama_panggilan(get_sess_data('user', 'nama')) }}
@@ -87,14 +86,14 @@
             <!--/.container-->
         </div>
         <!--/.wrapper-->
-        <div class="footer">
+        <!-- <div class="footer">
             <div class="container">
                 <center>
                     <b class="copyright">{{ copyright|raw }} </b> All rights reserved.<br>
                     {{ version|raw }} | Page loaded in {{ elapsed_time }} seconds.
                 </center>
             </div>
-        </div>
+        </div> -->
 
         {% include 'layout-footer.html' %}
         {% block js %}{% endblock %}
