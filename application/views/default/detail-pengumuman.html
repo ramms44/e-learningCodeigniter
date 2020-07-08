@@ -30,7 +30,7 @@ Detail Pengumuman - {{ parent() }}
         <b style="margin-bottom: 0px;">{{ p.judul }}</b>
         <small>
         <ul class="unstyled inline" style="margin-left: -5px;">
-            <li><b>Pembuat : </b>{{ anchor(p.pengajar.link_profil, p.pengajar.nama)|raw }}</li>
+            <li><b>Pembuat : </b>{{ p.judul }}</li>
             <li><b>Tgl. Tampil : </b>{{ tgl_indo(p.tgl_tampil) }} s/d {{ tgl_indo(p.tgl_tutup) }}</li>
         </ul>
         </small>

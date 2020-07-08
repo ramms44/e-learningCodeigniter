@@ -7,21 +7,21 @@ Buat Pengumuman - {{ parent() }}
 {% block content %}
 <div class="module">
     <div class="module-head">
-        <h3>{{ anchor('pengumuman', 'Pengumuman')|raw }} / Buat Pengumuman</h3>
+        <h3>{{ anchor('pengumuman', 'Presensi')|raw }} / Buat Presensi</h3>
     </div>
     <div class="module-body">
         {{ get_flashdata('pengumuman')|raw }}
 
         {{ form_open_multipart('pengumuman/add', {'class' : 'form-horizontal row-fluid'})|raw }}
             <div class="control-group">
-                <label class="control-label">Judul <span class="text-error">*</span></label>
+                <label class="control-label">Format Judul Wajib Isi (Nama + NIS) <span class="text-error">*</span></label>
                 <div class="controls">
                     <input type="text" name="judul" class="span12" value="{{ set_value('judul') }}">
                     <br>{{ form_error('judul')|raw }}
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">Tgl. Tampil <span class="text-error">*</span></label>
+                <label class="control-label">Tgl. Presensi <span class="text-error">*</span></label>
                 <div class="controls">
                     <input type="text" name="tgl_tampil" class="span4" value="{{ set_value('tgl_tampil') }}" id="pengumuman-tgl-tampil">
                     <br>{{ form_error('tgl_tampil')|raw }}

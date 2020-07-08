@@ -20,7 +20,6 @@ class Menu
         $this->menus['admin'] = array(
             0 => array(
                 '<a href="' . site_url() . '"><i class="menu-icon icon-home"></i>Beranda</a>',
-                '<a href="' . site_url('pengumuman') . '"><i class="menu-icon icon-bullhorn"></i>Pengumuman</a>',
                 '<a href="' . site_url('message') . '"><i class="menu-icon icon-comments"></i>Pesan <span class="menu-count-new-msg"></span></a>'
             ),
             1 => array(
@@ -51,7 +50,6 @@ class Menu
         $this->menus['pengajar'] = array(
             0 => array(
                 '<a href="' . site_url() . '"><i class="menu-icon icon-home"></i>Beranda</a>',
-                '<a href="' . site_url('pengumuman') . '"><i class="menu-icon icon-bullhorn"></i>Pengumuman</a>',
                 '<a href="' . site_url('message') . '"><i class="menu-icon icon-comments"></i>Pesan <span class="menu-count-new-msg"></span></a>',
                 '<a href="' . site_url('pengajar/jadwal') . '"><i class="menu-icon icon-tasks"></i>Jadwal Mengajar </a>'
             ),
@@ -76,6 +74,7 @@ class Menu
                 '<a href="' . site_url('siswa/jadwal_mapel') . '"><i class="menu-icon icon-tasks"></i>Jadwal Matapelajaran</a>'
             ),
             1 => array(
+                '<a href="' . site_url('pengumuman') . '"><i class="menu-icon icon-calendar"></i>Presensi</a>',
                 '<a href="' . site_url('tugas?clear_filter=true') . '"><i class="menu-icon icon-tasks"></i>Tugas </a>',
                 '<a href="' . site_url('materi?clear_filter=true') . '"><i class="menu-icon icon-book"></i>Materi </a>',
                 '<a href="' . site_url('materi/komentar') . '"><i class="menu-icon icon-comments"></i>Komentar saya </a>'

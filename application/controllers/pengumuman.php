@@ -117,9 +117,7 @@ class Pengumuman extends MY_Controller
     function add()
     {
         # yang bisa buat pengumuman adalah pengajar / admin
-        if (!is_pengajar() AND !is_admin()) {
-            redirect('pengumuman/index');
-        }
+        
 
         if ($this->form_validation->run('pengumuman') == true) {
             $judul           = $this->input->post('judul', true);
@@ -132,7 +130,7 @@ class Pengumuman extends MY_Controller
 
             $this->pengumuman_model->create($judul, $konten, $tgl_tampil, $tgl_tutup, $tampil_siswa, $tampil_pengajar, get_sess_data('user', 'id'));
 
-            $this->session->set_flashdata('pengumuman', get_alert('success', 'Pengumuman berhasil dibuat.'));
+            $this->session->set_flashdata('pengumuman', get_alert('success', 'Presensi berhasil dibuat.'));
             redirect('pengumuman/index/1');
         }
 
@@ -235,13 +233,14 @@ class Pengumuman extends MY_Controller
         }
 
         # cari pengajar
-        $pengajar = $this->pengajar_model->retrieve($pengumuman['pengajar_id']);
-        if (is_admin()) {
-            $pengajar['link_profil'] = site_url('pengajar/detail/' . $pengajar['status_id'] . '/' . $pengajar['id']);
-        } else {
-            $pengajar['link_profil'] = site_url('pengajar/detail/' . $pengajar['id']);
-        }
-        $pengumuman['pengajar']     = $pengajar;
+        // $pengajar = $this->pengajar_model->retrieve($pengumuman['pengajar_id']);
+        // $siswa = $this->siswa_model->retrieve($pengumuman['siswa_id']);
+        // if (is_admin()) {
+        //     $pengajar['link_profil'] = site_url('pengajar/detail/' . $pengajar['id']);
+        // } else {
+        //     $siswa['link_profil'] = site_url('siswa/detail/' . $siswa['id']);
+        // }
+        // $pengumuman['pengajar']     = $pengajar;
         $pengumuman['allow_action'] = $this->get_allow_action($pengumuman);
         $data['p']                  = $pengumuman;
 

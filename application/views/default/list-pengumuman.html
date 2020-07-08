@@ -7,7 +7,7 @@ Pengumuman - {{ parent() }}
 {% block content %}
 <div class="module">
     <div class="module-head">
-        <h3>Pengumuman</h3>
+        <h3>Presensi</h3>
     </div>
     <div class="module-body">
         {{ get_flashdata('pengumuman')|raw }}
@@ -22,9 +22,8 @@ Pengumuman - {{ parent() }}
                 </form>
             </div>
             <div class="pull-left">
-                {% if is_siswa() == false %}
                 <a href="{{ site_url('pengumuman/add') }}" class="btn btn-primary"><i class="icon-pencil"></i> Buat</a>
-                {% endif %}
+                
             </div>
         </div>
         <br>

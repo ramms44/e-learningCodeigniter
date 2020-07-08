@@ -26,8 +26,7 @@
                         <ul class="nav pull-right">
                             {% include 'top-mobile-menu.html' %}
 
-                            {% if is_admin() %}
-                            {% endif %}
+                            
                             <li class="nav-user dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 {{ nama_panggilan(get_sess_data('user', 'nama')) }}
 
