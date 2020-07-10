@@ -11,12 +11,19 @@ Data Siswa - {{ parent() }}
     </div>
     <div class="module-body">
         {{ get_flashdata('siswa')|raw }}
-
         <div class="row-fluid">
             <div class="span7">
                 <a href="{{ site_url('siswa/add/' ~ status_id) }}" class="btn btn-primary">Tambah Siswa</a>
+                <a href="http://localhost/elearning_test/form_upload.html" class="btn btn-primary">Import data Siswa from excel</a>
+                <!-- <br><br>
+                        <form method="post" enctype="multipart/form-data" action="proses">
+                            <div class="form-group">
+                                <label for="exampleInputFile">Import data siswa from excel</label>
+                                <input type="file" name="berkas_excel" class="form-control" id="exampleInputFile">
+                            </div>
+                            <button type="submit" class="btn btn-primary" >Import</button>
+                        </form> -->
             </div>
-
             <div class="span5">
                 <div class="btn-group pull-right">
                     {{ anchor('siswa/index/1', 'Aktif', {'class' : (status_id == 1) ? 'btn btn-info' : 'btn btn-default'})|raw }}

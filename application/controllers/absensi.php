@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
- * Class untuk resource Pengumuman
+ * Class untuk resource Absensi
  *
  * @package   e-Learning Dokumenary Net
  * @author    Almazari <almazary@gmail.com>
@@ -45,7 +45,7 @@ class Absensi extends MY_Controller
         }
     }
 
-    private function get_allow_action($pengumuman)
+    private function get_allow_action($absensi)
     {
         if (is_siswa()) {
             $allow_action = array('detail');
@@ -53,7 +53,7 @@ class Absensi extends MY_Controller
             $allow_action = array('detail', 'edit', 'delete');
         } elseif (is_pengajar()) {
             # kalo dia yang buat
-            if ($pengumuman['pengajar_id'] == get_sess_data('user', 'id')) {
+            if ($absensi['siswa_id'] == get_sess_data('user', 'id')) {
                 $allow_action = array('detail', 'edit', 'delete');
             } else {
                 $allow_action = array('detail');
@@ -95,12 +95,12 @@ class Absensi extends MY_Controller
             $data['keyword'] = $keyword;
         }
 
-        $retrieve_all = $this->pengumuman_model->retrieve_all(10, $page_no, $where, true);
+        $retrieve_all = $this->absensi_model->retrieve_all(10, $page_no, $where, true);
 
-        # format pengumuman
+        # format absensi
         foreach ($retrieve_all['results'] as $key => &$val) {
             # cari pengajar
-            $val['pengajar'] = $this->pengajar_model->retrieve($val['pengajar_id']);
+            $val['siswa'] = $this->siswa_id->retrieve($val['siswa_id']);
 
             # allow action
             $val['allow_action'] = $this->get_allow_action($val);
@@ -108,8 +108,8 @@ class Absensi extends MY_Controller
             $retrieve_all['results'][$key] = $val;
         }
 
-        $data['pengumuman'] = $retrieve_all['results'];
-        $data['pagination'] = $this->pager->view($retrieve_all, 'pengumuman/index/', empty($keyword) ? array() : array('?q=' . urlencode($keyword)));
+        $data['absensi'] = $retrieve_all['results'];
+        $data['pagination'] = $this->pager->view($retrieve_all, 'absensi/index/', empty($keyword) ? array() : array('?q=' . urlencode($keyword)));
 
         $this->twig->display('list-absensi.html', $data);
     }
@@ -130,7 +130,7 @@ class Absensi extends MY_Controller
 
             $this->pengumuman_model->create($judul, $konten, $tgl_tampil, $tgl_tutup, $tampil_siswa, $tampil_pengajar, get_sess_data('user', 'id'));
 
-            $this->session->set_flashdata('pengumuman', get_alert('success', 'Pengumuman berhasil dibuat.'));
+            $this->session->set_flashdata('pengumuman', get_alert('success', 'Presensi / Pengumuman berhasil dibuat.'));
             redirect('pengumuman/index/1');
         }
 
@@ -144,32 +144,32 @@ class Absensi extends MY_Controller
         $data['comp_js']  = $html_js;
         $data['comp_css'] = load_comp_css(array(base_url('assets/comp/daterangepicker/daterangepicker.css')));
 
-        $this->twig->display('tambah-absensi.html', $data);
+        $this->twig->display('tambah-pengumuman.html', $data);
     }
 
     function edit($segment_3 = '')
     {
-        # yang bisa edit pengumuman adalah pengajar / admin
+        # yang bisa edit absensi adalah pengajar / admin
         if (!is_pengajar() AND !is_admin()) {
-            redirect('pengumuman/index');
+            redirect('absensi/index');
         }
 
         $id = (int)$segment_3;
-        $pengumuman = $this->pengumuman_model->retrieve(array('id' => $id));
-        if (empty($pengumuman)) {
-            $this->session->set_flashdata('pengumuman', get_alert('warning', 'Pengumuman tidak ditemukan.'));
-            redirect('pengumuman/index/1');
+        $absensi = $this->absensi_model->retrieve(array('id' => $id));
+        if (empty($absensi)) {
+            $this->session->set_flashdata('absensi', get_alert('warning', 'absensi tidak ditemukan.'));
+            redirect('absensi/index/1');
         }
 
-        $allow_action = $this->get_allow_action($pengumuman);
+        $allow_action = $this->get_allow_action($absensi);
         if (!in_array('edit', $allow_action)) {
-            $this->session->set_flashdata('pengumuman', get_alert('warning', 'Akses ditolak.'));
-            redirect('pengumuman/index/1');
+            $this->session->set_flashdata('absensi', get_alert('warning', 'Akses ditolak.'));
+            redirect('absensi/index/1');
         }
 
-        $data['p'] = $pengumuman;
+        $data['p'] = $absensi;
 
-        if ($this->form_validation->run('pengumuman') == true) {
+        if ($this->form_validation->run('absensi') == true) {
             $judul           = $this->input->post('judul', true);
             $split           = explode(" s/d ", $this->input->post('tgl_tampil', true));
             $tgl_tampil      = $split[0];
@@ -178,10 +178,10 @@ class Absensi extends MY_Controller
             $tampil_siswa    = $this->input->post('tampil_siswa', true);
             $tampil_pengajar = $this->input->post('tampil_pengajar', true);
 
-            $this->pengumuman_model->update($pengumuman['id'], $judul, $konten, $tgl_tampil, $tgl_tutup, $tampil_siswa, $tampil_pengajar, $pengumuman['pengajar_id']);
+            $this->absensi_model->update($absensi['id'], $judul, $konten, $tgl_tampil, $tgl_tutup, $tampil_siswa, $tampil_pengajar, $absensi['siswa_id']);
 
-            $this->session->set_flashdata('pengumuman', get_alert('success', 'Pengumuman berhasil diperbaharui.'));
-            redirect('pengumuman/edit/' . $pengumuman['id']);
+            $this->session->set_flashdata('absensi', get_alert('success', 'absensi berhasil diperbaharui.'));
+            redirect('absensi/edit/' . $absensi['id']);
         }
 
         # load komponen
@@ -194,55 +194,55 @@ class Absensi extends MY_Controller
         $data['comp_js']  = $html_js;
         $data['comp_css'] = load_comp_css(array(base_url('assets/comp/daterangepicker/daterangepicker.css')));
 
-        $this->twig->display('edit-pengumuman.html', $data);
+        $this->twig->display('edit-absensi.html', $data);
     }
 
     function delete($segment_3 = '')
     {
-        # yang bisa edit pengumuman adalah pengajar / admin
+        # yang bisa edit absensi adalah pengajar / admin
         if (!is_pengajar() AND !is_admin()) {
-            redirect('pengumuman/index');
+            redirect('absensi/index');
         }
 
         $id = (int)$segment_3;
-        $pengumuman = $this->pengumuman_model->retrieve(array('id' => $id));
-        if (empty($pengumuman)) {
-            $this->session->set_flashdata('pengumuman', get_alert('warning', 'Pengumuman tidak ditemukan.'));
-            redirect('pengumuman/index/1');
+        $absensi = $this->absensi_model->retrieve(array('id' => $id));
+        if (empty($absensi)) {
+            $this->session->set_flashdata('absensi', get_alert('warning', 'absensi tidak ditemukan.'));
+            redirect('absensi/index/1');
         }
 
-        $allow_action = $this->get_allow_action($pengumuman);
+        $allow_action = $this->get_allow_action($absensi);
         if (!in_array('delete', $allow_action)) {
-            $this->session->set_flashdata('pengumuman', get_alert('warning', 'Akses ditolak.'));
-            redirect('pengumuman/index/1');
+            $this->session->set_flashdata('absensi', get_alert('warning', 'Akses ditolak.'));
+            redirect('absensi/index/1');
         }
 
-        $this->pengumuman_model->delete($pengumuman['id']);
+        $this->absensi_model->delete($absensi['id']);
 
-        $this->session->set_flashdata('pengumuman', get_alert('success', 'Pengumuman berhasil dihapus.'));
-        redirect('pengumuman/index/1');
+        $this->session->set_flashdata('absensi', get_alert('success', 'absensi berhasil dihapus.'));
+        redirect('absensi/index/1');
     }
 
     function detail($segment_3 = '')
     {
         $id = (int)$segment_3;
-        $pengumuman = $this->pengumuman_model->retrieve(array('id' => $id));
-        if (empty($pengumuman)) {
-            $this->session->set_flashdata('pengumuman', get_alert('warning', 'Pengumuman tidak ditemukan.'));
-            redirect('pengumuman/index/1');
+        $absensi = $this->absensi_model->retrieve(array('id' => $id));
+        if (empty($absensi)) {
+            $this->session->set_flashdata('absensi', get_alert('warning', 'absensi tidak ditemukan.'));
+            redirect('absensi/index/1');
         }
 
         # cari pengajar
-        $pengajar = $this->pengajar_model->retrieve($pengumuman['pengajar_id']);
+        $pengajar = $this->pengajar_model->retrieve($absensi['siswa_id']);
         if (is_admin()) {
             $pengajar['link_profil'] = site_url('pengajar/detail/' . $pengajar['status_id'] . '/' . $pengajar['id']);
         } else {
             $pengajar['link_profil'] = site_url('pengajar/detail/' . $pengajar['id']);
         }
-        $pengumuman['pengajar']     = $pengajar;
-        $pengumuman['allow_action'] = $this->get_allow_action($pengumuman);
-        $data['p']                  = $pengumuman;
+        $absensi['pengajar']     = $pengajar;
+        $absensi['allow_action'] = $this->get_allow_action($absensi);
+        $data['p']                  = $absensi;
 
-        $this->twig->display('detail-pengumuman.html', $data);
+        $this->twig->display('detail-absensi.html', $data);
     }
 }

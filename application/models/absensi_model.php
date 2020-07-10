@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class Model untuk resource pengumuman, versi 1.2
+ * Class Model untuk resource absensi, versi 1.2
  *
  * @package Elearning Dokumenary
  * @link    http://www.dokumenary.net
@@ -9,7 +9,7 @@
  */
 class Absensi_model extends CI_Model
 {
-    private $table = 'pengumuman';
+    private $table = 'absensi';
 
     function __construct()
     {
@@ -27,6 +27,7 @@ class Absensi_model extends CI_Model
      * @param  boolean $pagination
      * @return array
      */
+
     public function retrieve_all(
         $no_of_records = 10,
         $page_no       = 1,
@@ -65,7 +66,7 @@ class Absensi_model extends CI_Model
     }
 
     /**
-     * Method untuk mendapatkan satu record pengumuman
+     * Method untuk mendapatkan satu record absensi
      *
      * @param  array  $array_where
      * @return array
@@ -80,7 +81,7 @@ class Absensi_model extends CI_Model
     }
 
     /**
-     * Method untuk menghapus pengumuman
+     * Method untuk menghapus absensi
      *
      * @param  integer $id
      * @return boolean
@@ -93,7 +94,7 @@ class Absensi_model extends CI_Model
     }
 
     /**
-     * Method untuk update pengumuman
+     * Method untuk update absensi
      *
      * @param  integer $id
      * @param  string  $judul
@@ -102,7 +103,7 @@ class Absensi_model extends CI_Model
      * @param  date    $tgl_tutup
      * @param  integer $tampil_siswa
      * @param  integer $tampil_pengajar
-     * @param  integer $pengajar_id
+     * @param  integer $siswa_id
      * @return boolean
      */
     public function update(
@@ -113,7 +114,7 @@ class Absensi_model extends CI_Model
         $tgl_tutup       = '',
         $tampil_siswa    = '',
         $tampil_pengajar = '',
-        $pengajar_id
+        $siswa_id
     ) {
         $this->db->where('id', $id);
         $this->db->update($this->table, array(
@@ -123,14 +124,14 @@ class Absensi_model extends CI_Model
             'tgl_tutup'       => $tgl_tutup,
             'tampil_siswa'    => $tampil_siswa,
             'tampil_pengajar' => $tampil_pengajar,
-            'pengajar_id'     => $pengajar_id
+            'siswa_id'     => $siswa_id
         ));
 
         return true;
     }
 
     /**
-     * Method untuk nambah pengumuman
+     * Method untuk nambah absensi
      *
      * @param  string  $judul
      * @param  string  $konten
@@ -138,10 +139,10 @@ class Absensi_model extends CI_Model
      * @param  date    $tgl_tutup
      * @param  integer $tampil_siswa
      * @param  integer $tampil_pengajar
-     * @param  integer $pengajar_id
+     * @param  integer $siswa_id
      * @return integer last insert id
      */
-    public function create($judul = '', $konten = '', $tgl_tampil = '', $tgl_tutup = '', $tampil_siswa = '', $tampil_pengajar = '', $pengajar_id)
+    public function create($judul = '', $konten = '', $tgl_tampil = '', $tgl_tutup = '', $tampil_siswa = '', $tampil_pengajar = '', $siswa_id)
     {
         $this->db->insert($this->table, array(
             'judul'           => $judul,
@@ -150,21 +151,21 @@ class Absensi_model extends CI_Model
             'tgl_tutup'       => $tgl_tutup,
             'tampil_siswa'    => $tampil_siswa,
             'tampil_pengajar' => $tampil_pengajar,
-            'pengajar_id'     => $pengajar_id
+            'siswa_id'     => $siswa_id
         ));
 
         return $this->db->insert_id();
     }
 
     /**
-     * Method untuk membuat tabel pengumuman
+     * Method untuk membuat tabel absensi
      */
     public function create_table()
     {
         $CI =& get_instance();
         $CI->load->model('config_model');
 
-        $CI->config_model->create_tb_pengumuman();
+        $CI->config_model->create_tb_absensi();
 
         return true;
     }

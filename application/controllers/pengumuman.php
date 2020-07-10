@@ -130,7 +130,7 @@ class Pengumuman extends MY_Controller
 
             $this->pengumuman_model->create($judul, $konten, $tgl_tampil, $tgl_tutup, $tampil_siswa, $tampil_pengajar, get_sess_data('user', 'id'));
 
-            $this->session->set_flashdata('pengumuman', get_alert('success', 'Presensi berhasil dibuat.'));
+            $this->session->set_flashdata('pengumuman', get_alert('success', 'Pengumuman berhasil dibuat.'));
             redirect('pengumuman/index/1');
         }
 

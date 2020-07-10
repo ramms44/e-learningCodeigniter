@@ -1,18 +1,18 @@
 {% extends "layout-private.html" %}
 
 {% block title %}
-Buat Pengumuman - {{ parent() }}
+Buat Absensi - {{ parent() }}
 {% endblock %}
 
 {% block content %}
 <div class="module">
     <div class="module-head">
-        <h3>{{ anchor('pengumuman', 'Absensi')|raw }} / Buat Absensi</h3>
+        <h3>{{ anchor('absensi', 'Absensi')|raw }} / Buat Absensi</h3>
     </div>
     <div class="module-body">
-        {{ get_flashdata('pengumuman')|raw }}
+        {{ get_flashdata('absensi')|raw }}
 
-        {{ form_open_multipart('pengumuman/add', {'class' : 'form-horizontal row-fluid'})|raw }}
+        {{ form_open_multipart('absensi/add', {'class' : 'form-horizontal row-fluid'})|raw }}
             <div class="control-group">
                 <label class="control-label">Judul <span class="text-error">*</span></label>
                 <div class="controls">
@@ -23,7 +23,7 @@ Buat Pengumuman - {{ parent() }}
             <div class="control-group">
                 <label class="control-label">Tgl. Tampil <span class="text-error">*</span></label>
                 <div class="controls">
-                    <input type="text" name="tgl_tampil" class="span4" value="{{ set_value('tgl_tampil') }}" id="pengumuman-tgl-tampil">
+                    <input type="text" name="tgl_tampil" class="span4" value="{{ set_value('tgl_tampil') }}" id="absensi-tgl-tampil">
                     <br>{{ form_error('tgl_tampil')|raw }}
                 </div>
             </div>
@@ -53,7 +53,7 @@ Buat Pengumuman - {{ parent() }}
             <div class="control-group">
                 <div class="controls">
                     <button type="submit" class="btn btn-primary">Simpan</button>
-                    <a href="{{ site_url('pengumuman') }}" class="btn btn-default">Kembali</a>
+                    <a href="{{ site_url('absensi') }}" class="btn btn-default">Kembali</a>
                 </div>
             </div>
         {{ form_close()|raw }}

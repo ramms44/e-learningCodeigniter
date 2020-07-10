@@ -66,7 +66,7 @@ class MY_Controller extends CI_Controller
         $this->load->library(array('session', 'form_validation', 'pager', 'parser', 'image_lib', 'upload', 'twig', 'user_agent', 'email', 'menu'));
 
         # load saja semua model
-        $this->load->model(array('config_model', 'kelas_model', 'login_model', 'mapel_model', 'materi_model', 'pengajar_model', 'siswa_model', 'tugas_model', 'msg_model', 'pengumuman_model', 'komentar_model'));
+        $this->load->model(array('config_model', 'kelas_model', 'login_model', 'mapel_model', 'materi_model', 'pengajar_model', 'siswa_model', 'tugas_model', 'msg_model', 'pengumuman_model', 'absensi_model', 'komentar_model'));
 
         # delimiters form validation
         $this->form_validation->set_error_delimiters('<span class="text-error"><i class="icon-info-sign"></i> ', '</span>');
@@ -497,20 +497,6 @@ class MY_Controller extends CI_Controller
             }
 
             $decode_value = json_decode($data_field['value'], 1);
-            
-            /**
-             * cek dulu tugasnya masih ada atau tidak
-             */
-            if (!empty($decode_value['tugas'])) {
-                $tugas = $this->tugas_model->retrieve($decode_value['tugas']['id']);
-                if (empty($tugas)) {
-                    /**
-                     * hapus saja
-                     */
-                    $this->db->delete($table, array('id' => $data_field['id']));
-                    return true;
-                }
-            }
 
             if (isset($decode_value['valid_route']) AND isset($decode_value['uri_string'])) {
                 # cek valid route
